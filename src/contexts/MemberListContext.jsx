@@ -7,8 +7,56 @@ const MemberListContextProvider = ({ children }) => {
   const [data, setData] = useState([]);
   const [memberState, setMemberState] = useState('total');
   const [gender, setGender] = useState('total');
+  const [keyword, setKeyword] = useState('');
+  const [phoneOrName, setPhoneOrName] = useState('이름');
 
   const token = localStorage.getItem('token');
+
+  const onChangeSearchbar = (e) => {
+    setKeyword(e.target.value);
+  };
+
+  const onChangeSelect = (e) => {
+    setPhoneOrName(e.target.value);
+  };
+
+  const searchMember = () => {
+    if (phoneOrName === '연락처') {
+      axios
+        .get(`http://localhost:3100/member/phone?phoneNumber=${keyword}`, {
+          headers: {
+            Authorization: localStorage.getItem('token'),
+          },
+        })
+        .then((response) => {
+          setData([response.data]);
+        })
+        .catch((err) => {
+          if (err.response.status === 404) {
+            alert('연락처에 해당하는 회원이 존재하지 않습니다.');
+          }
+
+          setData([]);
+        });
+
+      return;
+    }
+    axios
+      .get(`http://localhost:3100/member/name?name=${keyword}`, {
+        headers: {
+          Authorization: localStorage.getItem('token'),
+        },
+      })
+      .then((response) => {
+        setData(response.data);
+      })
+      .catch((err) => {
+        if (err.response.status === 404) {
+          alert('이름에 해당하는 회원이 존재하지 않습니다.');
+        }
+        setData([]);
+      });
+  };
 
   useEffect(() => {
     const initData = async () =>
@@ -70,7 +118,16 @@ const MemberListContextProvider = ({ children }) => {
 
   return (
     <MemberListContext.Provider
-      value={{ memberList: data, onChangeOptGender, onChangeOptState }}
+      value={{
+        memberList: data,
+        onChangeOptGender,
+        onChangeOptState,
+        onChangeSearchbar,
+        onChangeSelect,
+        searchMember,
+        keyword,
+        phoneOrName,
+      }}
     >
       {children}
     </MemberListContext.Provider>
