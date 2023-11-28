@@ -1,10 +1,10 @@
 import styled from '@emotion/styled';
 import { MemberListContext } from '../../contexts/MemberListContext';
 import { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
   display: flex;
-
   align-items: center;
 `;
 
@@ -32,11 +32,12 @@ const Select = styled.select`
 `;
 
 const MemberListTopMenu = () => {
+  const navigator = useNavigate();
   const { onChangeOptGender, onChangeOptState } = useContext(MemberListContext);
   return (
     <Container>
       <TopMenu>
-        <Menu>등록</Menu>
+        <Menu onClick={() => navigator('/registMember')}>등록</Menu>
         <Menu>삭제</Menu>
         <Menu>목록다운로드</Menu>
       </TopMenu>

@@ -31,7 +31,7 @@ const Header = () => {
       <Nav>
         <Menu onClick={() => navigator('/memberList')}>회원리스트</Menu>
         <Menu>회원관리</Menu>
-        <Menu>회원등록</Menu>
+        <Menu onClick={() => navigator('/registMember')}>회원등록</Menu>
         <Menu>Staff</Menu>
       </Nav>
     </Container>

@@ -7,9 +7,8 @@ const MemberListContextProvider = ({ children }) => {
   const [data, setData] = useState([]);
   const [memberState, setMemberState] = useState('total');
   const [gender, setGender] = useState('total');
-  console.log(memberState, gender);
-  const token =
-    'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Iuq5gO2VhOyEoCIsImlhdCI6MTcwMTE0MzY3NiwiZXhwIjoxNzAxMTYxNjc2fQ.Vn3NSClZvHmtKVIhHU_cGjjAhrsQ48AexmD_RH_X7s4';
+
+  const token = localStorage.getItem('token');
 
   useEffect(() => {
     const initData = async () =>
