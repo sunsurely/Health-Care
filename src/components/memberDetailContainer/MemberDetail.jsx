@@ -1,7 +1,8 @@
 import styled from '@emotion/styled';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
+import { MemberListContext } from '../../contexts/MemberListContext';
 
 const Container = styled.div`
   width: 1000px;
@@ -16,7 +17,7 @@ const Title = styled.p`
   color: red;
 `;
 
-const MemberInfo = styled.div`
+const InfoSection = styled.div`
   padding: 20px;
   border-bottom: 2px solid #c7c7c7;
 
@@ -35,12 +36,6 @@ const Labels = styled.div`
   width: 200px;
   display: flex;
   flex-direction: column;
-`;
-
-const RegistedMemberInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
 `;
 
 const BirthAndPhoneNumber = styled.div`
@@ -66,7 +61,7 @@ const PeriodAndAmounts = styled.div`
 
 const MemberDetail = () => {
   const [data, setData] = useState('');
-
+  const { setIsLogin } = useContext(MemberListContext);
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const memberId = searchParams.get('id');
@@ -83,54 +78,66 @@ const MemberDetail = () => {
           setData(response.data);
         })
         .catch((error) => {
-          // if (error.response.status === 401) {
-          //   axios
-          //     .post(
-          //       `http://localhost:3100/auth/refresh`,
-          //       {},
-          //       {
-          //         headers: {
-          //           Authorization: localStorage.getItem('refreshToken'),
-          //         },
-          //       },
-          //     )
-          //     .then((response) => {
-          //       localStorage.setItem('isLogin', 'true');
-          //       localStorage.setItem(
-          //         'accessToken',
-          //         `Bearer ${response.data.accessToken}`,
-          //       );
-          //       axios
-          //         .get(`http://localhost:3100/member/${memberId}/detail`, {
-          //           headers: {
-          //             Authorization: `Bearer ${response.data.accessToken}`,
-          //           },
-          //         })
-          //         .then((response) => {
-          //           setData(response.data);
-          //         })
-          //         .catch((error) => {
-          //           if (error.response.status === 404) {
-          //             alert('해당 회원이 존재하지 않습니다.');
-          //           }
-          //         });
-          //     })
-          //     .catch((error) => {
-          //       if (error.response.status === 401)
-          //         alert('로그인이 필요한 기능입니다.');
-          //     });
-          // }
+          if (error.response.status === 401) {
+            axios
+              .post(
+                `http://localhost:3100/auth/refresh`,
+                {},
+                {
+                  headers: {
+                    Authorization: localStorage.getItem('refreshToken'),
+                  },
+                },
+              )
+              .then((response) => {
+                localStorage.setItem('isLogin', 'true');
+                localStorage.setItem(
+                  'accessToken',
+                  `Bearer ${response.data.accessToken}`,
+                );
+                axios
+                  .get(`http://localhost:3100/member/${memberId}/detail`, {
+                    headers: {
+                      Authorization: `Bearer ${response.data.accessToken}`,
+                    },
+                  })
+                  .then((response) => {
+                    setData(response.data);
+                  })
+                  .catch((error) => {
+                    if (error.response.status === 404) {
+                      alert('해당 회원이 존재하지 않습니다.');
+                    }
+                  });
+              })
+              .catch((error) => {
+                if (error.response.status === 401)
+                  alert('로그인이 필요한 기능입니다.');
+                setIsLogin(false);
+              });
+          }
 
-          alelt(error);
+          alert(error);
         });
     };
 
     initData();
   }, []);
 
+  if (!data) {
+    return <div>Loading...</div>;
+  }
+
+  const registrationDate = data.registDate;
+  const monthsToAdd = 6;
+
+  const expirationDate = new Date(registrationDate);
+  expirationDate.setMonth(expirationDate.getMonth() + monthsToAdd);
+  const formattedExpirationDate = expirationDate.toISOString().split('T')[0];
+
   return (
     <Container>
-      <MemberInfo>
+      <InfoSection>
         <Title>◆ 개인정보</Title>
         <NameAndGender>
           <Labels>
@@ -152,8 +159,8 @@ const MemberDetail = () => {
             <p>{data.phoneNumber}</p>
           </Labels>
         </BirthAndPhoneNumber>
-      </MemberInfo>
-      <RegistedMemberInfo>
+      </InfoSection>
+      <InfoSection>
         <Title>◆ 등록정보</Title>
         <RegistDateAndState>
           <Labels>
@@ -171,11 +178,44 @@ const MemberDetail = () => {
             <p>{data.period}개월</p>
           </Labels>
           <Labels style={{ borderLeft: '1px solid grey' }}>
-            <p>회원권 금액</p>
-            <p>{data.amounts}원 </p>
+            <p>만료일자</p>
+            <p>{formattedExpirationDate}</p>
           </Labels>
         </PeriodAndAmounts>
-      </RegistedMemberInfo>
+      </InfoSection>
+      <InfoSection>
+        <Title>◆ PT정보</Title>
+        <RegistDateAndState>
+          <Labels>
+            <p>등록일자</p>
+            <p>{data.counting !== '-' ? data.ptRegistDate : '-'}</p>
+          </Labels>
+          <Labels style={{ borderLeft: '1px solid grey' }}>
+            <p>담당 트레이너</p>
+            <p>{data.counting !== '-' ? data.trainerName : '-'}</p>
+          </Labels>
+        </RegistDateAndState>
+        <PeriodAndAmounts>
+          <Labels>
+            <p>남은횟수</p>
+            <p
+              style={
+                data.counting !== '-'
+                  ? { marginLeft: '20px' }
+                  : { marginLeft: '0px' }
+              }
+            >
+              {data.counting !== '-' ? data.counting : '-'}
+            </p>
+          </Labels>
+          <Labels style={{ borderLeft: '1px solid grey' }}>
+            <p>회원권 금액</p>
+            <p>
+              {data.counting !== '-' ? data.amounts.toLocaleString() : '-'}원{' '}
+            </p>
+          </Labels>
+        </PeriodAndAmounts>
+      </InfoSection>
     </Container>
   );
 };

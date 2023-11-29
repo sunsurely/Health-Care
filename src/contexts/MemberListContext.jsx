@@ -1,5 +1,12 @@
-import { createContext, useCallback, useEffect, useState } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import axios from 'axios';
+import { SigninContext } from '../App';
 
 export const MemberListContext = createContext();
 
@@ -10,6 +17,8 @@ const MemberListContextProvider = ({ children }) => {
   const [keyword, setKeyword] = useState('');
   const [phoneOrName, setPhoneOrName] = useState('이름');
 
+  const { setIsLogin } = useContext(SigninContext);
+
   useEffect(() => {
     const initData = async () => {
       await axios
@@ -19,6 +28,9 @@ const MemberListContextProvider = ({ children }) => {
         })
         .then((res) => setData(res.data))
         .catch((error) => {
+          if (error.response.status === 401) {
+            checkRefresh();
+          }
           console.error(error);
         });
     };
@@ -43,10 +55,13 @@ const MemberListContextProvider = ({ children }) => {
           `Bearer ${response.data.accessToken}`,
         );
 
+        const categoryString = category ? `${category}=${keyword}` : '';
+
         axios
-          .get(`http://localhost:3100/member/${category}=${keyword}`, {
+          .get(`http://localhost:3100/member/${categoryString} `, {
             headers: {
               Authorization: `Bearer ${response.data.accessToken}`,
+              params: { gender, state: memberState },
             },
           })
           .then((response) => {
@@ -59,7 +74,9 @@ const MemberListContextProvider = ({ children }) => {
           });
       })
       .catch((error) => {
-        if (error.response.status === 401) alert('로그인이 필요한 기능입니다.');
+        if (error.response.status === 401) {
+          setIsLogin(false);
+        }
       });
   };
 

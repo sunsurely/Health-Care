@@ -49,7 +49,7 @@ const App = () => {
   };
 
   return (
-    <SigninContext.Provider value={{ isLogin, logout, onSignin }}>
+    <SigninContext.Provider value={{ isLogin, logout, onSignin, setIsLogin }}>
       <Header />
       <BodyContainer />
     </SigninContext.Provider>

@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
 import MemberListTitle from '../memberListTitle/MemberListTitle';
 import MemberListContainer from '../memberListContainer/MemberListContainer';
-import MemberListContextProvider from '../../contexts/MemberListContext';
 
 const Container = styled.div`
   display: flex;
