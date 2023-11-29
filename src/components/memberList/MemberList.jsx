@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { useContext } from 'react';
 import { MemberListContext } from '../../contexts/MemberListContext';
+import { useNavigate } from 'react-router-dom';
 
 const Table = styled.table`
   border-collapse: collapse;
@@ -31,7 +32,7 @@ const Check = styled.input`
 
 const MemberList = () => {
   const { memberList } = useContext(MemberListContext);
-
+  const navigator = useNavigate();
   return (
     <Table>
       <thead>
@@ -57,7 +58,12 @@ const MemberList = () => {
                 <Check type="checkbox" />
                 {member.registDate}
               </Td>
-              <Td>{member.name}</Td>
+              <Td
+                style={{ cursor: 'pointer' }}
+                onClick={() => navigator(`/member?id=${member.id}`)}
+              >
+                {member.name}
+              </Td>
               <Td>{member.gender}</Td>
               <Td>{member.birth}</Td>
               <Td>{member.state}</Td>

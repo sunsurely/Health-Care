@@ -13,12 +13,10 @@ const Container = styled.div`
 
 const MemberContainer = () => {
   return (
-    <MemberListContextProvider>
-      <Container>
-        <MemberListTitle title="회원 리스트" />
-        <MemberListContainer />
-      </Container>
-    </MemberListContextProvider>
+    <Container>
+      <MemberListTitle title="회원 리스트" />
+      <MemberListContainer />
+    </Container>
   );
 };
 
