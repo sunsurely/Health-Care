@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { MemberListContext } from '../../contexts/MemberListContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -31,14 +31,23 @@ const Check = styled.input`
 `;
 
 const MemberList = () => {
-  const { memberList } = useContext(MemberListContext);
+  const { memberList, handleToggleAll, handleToggleSingle, checkedArray } =
+    useContext(MemberListContext);
   const navigator = useNavigate();
+
   return (
     <Table>
       <thead>
         <Tr>
           <Th>
-            <Check type="checkbox" />
+            <Check
+              type="checkbox"
+              checked={
+                checkedArray.length > 0 &&
+                checkedArray.every((check) => check.checked)
+              }
+              onChange={handleToggleAll}
+            />
             등록일자
           </Th>
           <Th>성명</Th>
@@ -55,7 +64,14 @@ const MemberList = () => {
           return (
             <Tr key={member.id}>
               <Td>
-                <Check type="checkbox" />
+                <Check
+                  type="checkbox"
+                  onChange={() => handleToggleSingle(member.id)}
+                  // checked={
+                  //   checkedArray.length > 0 &&
+                  //   checkedArray[member.id - 1].checked
+                  // }
+                />
                 {member.registDate}
               </Td>
               <Td

@@ -16,6 +16,28 @@ const MemberListContextProvider = ({ children }) => {
   const [gender, setGender] = useState('total');
   const [keyword, setKeyword] = useState('');
   const [phoneOrName, setPhoneOrName] = useState('이름');
+  const [checkedArray, setCheckedArray] = useState([]);
+
+  const handleToggleAll = () => {
+    const newArr = checkedArray.map((check) => {
+      return {
+        ...check,
+        checked: !checkedArray.every((check) => check.checked),
+      };
+    });
+    setCheckedArray(newArr);
+  };
+
+  const handleToggleSingle = (id) => {
+    const newArr = checkedArray.map((check) => {
+      return {
+        ...check,
+        checked: check.id === id ? !check.checked : check.checked,
+      };
+    });
+
+    setCheckedArray(newArr);
+  };
 
   const { setIsLogin } = useContext(SigninContext);
 
@@ -36,6 +58,13 @@ const MemberListContextProvider = ({ children }) => {
     };
     initData();
   }, [memberState, gender]);
+
+  useEffect(() => {
+    const updateArr = data.map((member) => {
+      return { id: member.id, checked: false };
+    });
+    setCheckedArray(updateArr);
+  }, [data]);
 
   const checkRefresh = (category) => {
     axios
@@ -78,6 +107,34 @@ const MemberListContextProvider = ({ children }) => {
           setIsLogin(false);
         }
       });
+  };
+
+  const onDelete = () => {
+    const confirmed = window.confirm('삭제하시겠습니까?');
+
+    if (confirmed) {
+      checkedArray.forEach((check) => {
+        if (check.checked) {
+          console.log(check.id);
+          axios
+            .delete(`http://localhost:3100/member/${check.id}`, {
+              headers: {
+                Authorization: localStorage.getItem('accessToken'),
+              },
+            })
+            .then((response) => {})
+            .catch((error) => {
+              if (error.response.status === 401) {
+                checkRefresh();
+              }
+
+              console.log(error);
+            });
+        }
+      });
+    }
+    alert('멤버를 삭제했습니다.');
+    location.reload();
   };
 
   const onChangeSearchbar = (e) => {
@@ -188,6 +245,11 @@ const MemberListContextProvider = ({ children }) => {
         searchMember,
         keyword,
         phoneOrName,
+        handleToggleAll,
+        handleToggleSingle,
+        onDelete,
+        checkedArray,
+        setMemberState,
       }}
     >
       {children}
