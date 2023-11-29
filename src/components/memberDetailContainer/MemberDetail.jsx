@@ -10,7 +10,6 @@ const Container = styled.div`
   flex-direction: column;
   border-top: 4px solid #dbdbdb;
   padding: 10px;
-  margin-top: 100px;
 `;
 
 const Title = styled.p`

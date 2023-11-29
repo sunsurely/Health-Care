@@ -7,7 +7,7 @@ import MemberDetail from '../memberDetailContainer/MemberDetail';
 import MemberListContextProvider from '../../contexts/MemberListContext';
 
 const Container = styled.div`
-  margin-top: 100px;
+  margin-top: 200px;
   display: flex;
   align-items: center;
   justify-content: center;

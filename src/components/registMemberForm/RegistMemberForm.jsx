@@ -173,7 +173,9 @@ const RegistMemberForm = () => {
         <Button type="button" onClick={onRegist}>
           등록
         </Button>
-        <Button type="button">취소</Button>
+        <Button type="button" onClick={() => navigator('/memberList')}>
+          취소
+        </Button>
       </ButtonContainer>
     </Container>
   );

@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 import RegistMemberForm from '../registMemberForm/RegistMemberForm';
-import FormTitle from '../formTitle/FormTitle';
 
 const Container = styled.div`
   display: flex;
@@ -12,7 +11,6 @@ const Container = styled.div`
 const RegistContainer = () => {
   return (
     <Container>
-      <FormTitle title="멤버등록" />
       <RegistMemberForm />
     </Container>
   );

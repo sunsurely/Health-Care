@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import MemberListTitle from '../memberListTitle/MemberListTitle';
 import MemberListContainer from '../memberListContainer/MemberListContainer';
 
 const Container = styled.div`
@@ -13,7 +12,6 @@ const Container = styled.div`
 const MemberContainer = () => {
   return (
     <Container>
-      <MemberListTitle title="회원 리스트" />
       <MemberListContainer />
     </Container>
   );
