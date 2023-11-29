@@ -5,16 +5,15 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  border-bottom: 2px solid black;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 `;
 
-const Title = styled.h3`
+const Title = styled.h1`
   padding: 5px;
   margin: 0;
 `;
 
-const RegistTitle = ({ title }) => {
+const FormTitle = ({ title }) => {
   return (
     <Container>
       <Title>{title}</Title>
@@ -22,4 +21,4 @@ const RegistTitle = ({ title }) => {
   );
 };
 
-export default RegistTitle;
+export default FormTitle;

@@ -1,8 +1,7 @@
 import styled from '@emotion/styled';
 import { MemberListContext } from '../../contexts/MemberListContext';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 
 const Container = styled.div`
   display: flex;
@@ -10,12 +9,12 @@ const Container = styled.div`
 `;
 
 const TopMenu = styled.ul`
+  padding-left: 0;
   display: flex;
-  flex: 1;
 `;
 
 const Menu = styled.li`
-  margin-left: 30px;
+  margin-left: 10px;
   list-style: none;
   font-weight: bold;
   &:hover {
@@ -25,12 +24,17 @@ const Menu = styled.li`
 `;
 
 const OptBox = styled.div`
+  margin-left: 350px;
   width: 20%;
 `;
 
 const Select = styled.select`
   padding: 5px;
   margin-left: 10px;
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const SearchSet = styled.div`
@@ -38,12 +42,11 @@ const SearchSet = styled.div`
 `;
 
 const SearchBar = styled.input`
-  margin-left: 50px;
-  padding: 5px;
+  margin-left: 20px;
 `;
 
 const SearchButton = styled.button`
-  width: 50px;
+  width: 70px;
   background-color: #ff3131;
   color: white;
   padding: 5px;
@@ -81,19 +84,20 @@ const MemberListTopMenu = () => {
         <Menu onClick={() => navigator('/registMember')}>등록</Menu>
         <Menu>삭제</Menu>
         <Menu>목록다운로드</Menu>
-        <SearchSet>
-          <SearchBar
-            onChange={onChangeSearchbar}
-            onKeyDown={onEnter}
-            value={keyword}
-          />
-          <select onChange={onChangeSelect} value={phoneOrName}>
-            <option>이름</option>
-            <option>연락처</option>
-          </select>
-          <SearchButton onClick={searchMember}>조회</SearchButton>
-        </SearchSet>
       </TopMenu>
+      <SearchSet>
+        <SearchBar
+          onChange={onChangeSearchbar}
+          onKeyDown={onEnter}
+          value={keyword}
+        />
+        <select onChange={onChangeSelect} value={phoneOrName}>
+          <option>이름</option>
+          <option>연락처</option>
+        </select>
+        <SearchButton onClick={searchMember}>조회</SearchButton>
+        <SearchButton onClick={() => location.reload()}>새로고침</SearchButton>
+      </SearchSet>
       <OptBox>
         <Select onChange={onChangeOptState}>
           <option>전체</option>

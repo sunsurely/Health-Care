@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
-import RegistMemberForm from '../registMemberForm/RegistMemberForm';
 import FormTitle from '../formTitle/FormTitle';
+import SigninForm from '../signinForm/SigninForm';
 
 const Container = styled.div`
   display: flex;
@@ -9,13 +9,13 @@ const Container = styled.div`
   align-items: center;
 `;
 
-const RegistContainer = () => {
+const SigninContainer = () => {
   return (
     <Container>
-      <FormTitle title="멤버등록" />
-      <RegistMemberForm />
+      <FormTitle title="로그인" />
+      <SigninForm />
     </Container>
   );
 };
 
-export default RegistContainer;
+export default SigninContainer;

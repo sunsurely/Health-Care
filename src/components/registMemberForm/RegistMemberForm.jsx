@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import axios from 'axios';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
@@ -8,7 +8,8 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: 1px solid black;
+  border: 1px solid #a2a2a2;
+  border-radius: 5px;
   padding: 30px;
 `;
 
@@ -30,6 +31,7 @@ const Label = styled.label`
 const Input = styled.input`
   width: 300px;
   padding: 5px;
+  border: 1px solid #a2a2a2;
 
   &:focus::placeholder {
     opacity: 0;
@@ -74,7 +76,7 @@ const RegistMemberForm = () => {
   const month = new Date().getMonth() + 1;
   const day = new Date().getDate();
   const ymd = `${year}-${month}-${day}`;
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem('accessToken');
 
   const navigator = useNavigate();
 
@@ -140,14 +142,22 @@ const RegistMemberForm = () => {
       </InputSet>
       <InputSet>
         <Label>성별</Label>
-        <select value={gender} onChange={onChangeGender}>
+        <select
+          value={gender}
+          style={{ border: '1px solid #a2a2a2' }}
+          onChange={onChangeGender}
+        >
           <option>남성</option>
           <option>여성</option>
         </select>
       </InputSet>
       <InputSet>
         <Label>기간</Label>
-        <select value={period} onChange={onChangePeriod}>
+        <select
+          style={{ border: '1px solid #a2a2a2' }}
+          value={period}
+          onChange={onChangePeriod}
+        >
           <option>1</option>
           <option>3</option>
           <option>4</option>

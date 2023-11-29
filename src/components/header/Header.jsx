@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
+import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { SigninContext } from '../../App';
 
 const Container = styled.div`
   width: 100%;
@@ -25,7 +27,9 @@ const Menu = styled.li`
 `;
 
 const Header = () => {
+  const { isLogin, logout } = useContext(SigninContext);
   const navigator = useNavigate();
+
   return (
     <Container>
       <Nav>
@@ -33,6 +37,9 @@ const Header = () => {
         <Menu>회원관리</Menu>
         <Menu onClick={() => navigator('/registMember')}>회원등록</Menu>
         <Menu>Staff</Menu>
+        <Menu onClick={isLogin ? logout : () => navigator('/signin')}>
+          {isLogin ? '로그아웃' : '로그인'}
+        </Menu>
       </Nav>
     </Container>
   );
