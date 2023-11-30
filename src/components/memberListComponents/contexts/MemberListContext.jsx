@@ -6,7 +6,7 @@ import {
   useState,
 } from 'react';
 import axios from 'axios';
-import { SigninContext } from '../App';
+import { SigninContext } from '../../../App';
 
 export const MemberListContext = createContext();
 

@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import axios from 'axios';
 import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { SigninContext } from '../../App';
+import { SigninContext } from '../../../App';
 
 const Container = styled.div`
   display: flex;
@@ -18,7 +18,7 @@ const InputSet = styled.div`
   margin-left: 30px;
   width: 450px;
   display: flex;
-  margin-top: 10px;
+  margin-top: 30px;
   margin-bottom: 20px;
 `;
 
@@ -115,7 +115,7 @@ const SigninForm = () => {
 
       <ButtonContainer>
         <Button type="button" onClick={onRegist}>
-          등록
+          로그인
         </Button>
         <Button type="button" onClick={() => navigator('/memberList')}>
           취소

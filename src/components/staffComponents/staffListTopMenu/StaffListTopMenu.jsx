@@ -1,7 +1,8 @@
 import styled from '@emotion/styled';
-import { MemberListContext } from '../../contexts/MemberListContext';
+import { MemberListContext } from '../../memberListComponents/contexts/MemberListContext';
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { StaffContext } from '../contexts/StaffContext';
 
 const Container = styled.div`
   display: flex;
@@ -24,8 +25,8 @@ const Menu = styled.li`
 `;
 
 const OptBox = styled.div`
-  margin-left: 350px;
-  width: 20%;
+  margin-left: 410px;
+  width: 15%;
 `;
 
 const Select = styled.select`
@@ -60,18 +61,9 @@ const SearchButton = styled.button`
   }
 `;
 
-const MemberListTopMenu = () => {
+const StaffListTopMenu = () => {
+  const { setGender } = useContext(StaffContext);
   const navigator = useNavigate();
-  const {
-    onChangeOptGender,
-    onChangeOptState,
-    onChangeSearchbar,
-    onChangeSelect,
-    searchMember,
-    keyword,
-    phoneOrName,
-    onDelete,
-  } = useContext(MemberListContext);
 
   const onEnter = (e) => {
     if (e.key === 'Enter') {
@@ -79,34 +71,28 @@ const MemberListTopMenu = () => {
     }
   };
 
+  const onChangeHandler = (e) => {
+    setGender(e.target.value);
+  };
+
   return (
     <Container>
       <TopMenu>
-        <Menu onClick={() => navigator('/registMember')}>등록</Menu>
-        <Menu onClick={onDelete}>삭제</Menu>
+        <Menu onClick={() => navigator('/registStaff')}>등록</Menu>
+        <Menu>삭제</Menu>
         <Menu>목록다운로드</Menu>
       </TopMenu>
       <SearchSet>
-        <SearchBar
-          onChange={onChangeSearchbar}
-          onKeyDown={onEnter}
-          value={keyword}
-        />
-        <select onChange={onChangeSelect} value={phoneOrName}>
+        <SearchBar onKeyDown={onEnter} />
+        <select>
           <option>이름</option>
           <option>연락처</option>
         </select>
-        <SearchButton onClick={searchMember}>조회</SearchButton>
+        <SearchButton>조회</SearchButton>
         <SearchButton onClick={() => location.reload()}>새로고침</SearchButton>
       </SearchSet>
       <OptBox>
-        <Select onChange={onChangeOptState}>
-          <option>전체</option>
-          <option>PT</option>
-          <option>일반</option>
-          <option>만료</option>
-        </Select>
-        <Select onChange={onChangeOptGender}>
+        <Select onChange={(e) => onChangeHandler(e)}>
           <option>전체</option>
           <option>남성</option>
           <option>여성</option>
@@ -121,4 +107,4 @@ const MemberListTopMenu = () => {
   );
 };
 
-export default MemberListTopMenu;
+export default StaffListTopMenu;

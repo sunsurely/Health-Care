@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { useContext, useEffect, useState } from 'react';
-import { MemberListContext } from '../../contexts/MemberListContext';
+import { MemberListContext } from '../contexts/MemberListContext';
 import { useNavigate } from 'react-router-dom';
 
 const Table = styled.table`
@@ -67,10 +67,10 @@ const MemberList = () => {
                 <Check
                   type="checkbox"
                   onChange={() => handleToggleSingle(member.id)}
-                  // checked={
-                  //   checkedArray.length > 0 &&
-                  //   checkedArray[member.id - 1].checked
-                  // }
+                  checked={
+                    checkedArray.length > 0 &&
+                    checkedArray.find((check) => check.id === member.id).checked
+                  }
                 />
                 {member.registDate}
               </Td>

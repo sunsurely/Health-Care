@@ -1,8 +1,7 @@
 import styled from '@emotion/styled';
 import axios from 'axios';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { MemberListContext } from '../../contexts/MemberListContext';
 
 const Container = styled.div`
   display: flex;
@@ -72,8 +71,6 @@ const RegistMemberForm = () => {
   const [birth, setBirth] = useState('');
   const [gender, setGender] = useState('');
   const [period, setPeriod] = useState(1);
-
-  const { setMemberState } = useContext(MemberListContext);
 
   const year = new Date().getFullYear();
   const month = new Date().getMonth() + 1;

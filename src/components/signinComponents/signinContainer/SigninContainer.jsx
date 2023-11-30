@@ -1,24 +1,19 @@
 import styled from '@emotion/styled';
+import SigninForm from '../signinForm/SigninForm';
 
 const Container = styled.div`
-  width: 200px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-bottom: 15px;
 `;
 
-const Title = styled.h1`
-  padding: 5px;
-  margin: 0;
-`;
-
-const FormTitle = ({ title }) => {
+const SigninContainer = () => {
   return (
     <Container>
-      <Title>{title}</Title>
+      <SigninForm />
     </Container>
   );
 };
 
-export default FormTitle;
+export default SigninContainer;

@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
-import { MemberListContext } from '../../contexts/MemberListContext';
+import { MemberListContext } from '../memberListComponents/contexts/MemberListContext';
 
 const Container = styled.div`
   width: 1000px;
