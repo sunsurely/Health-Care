@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 import { MemberListContext } from '../contexts/MemberListContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -69,7 +69,8 @@ const MemberList = () => {
                   onChange={() => handleToggleSingle(member.id)}
                   checked={
                     checkedArray.length > 0 &&
-                    checkedArray.find((check) => check.id === member.id).checked
+                    checkedArray.find((check) => check.id === member.id)
+                      ?.checked
                   }
                 />
                 {member.registDate}

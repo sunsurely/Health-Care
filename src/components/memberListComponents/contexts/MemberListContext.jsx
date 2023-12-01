@@ -7,6 +7,7 @@ import {
 } from 'react';
 import axios from 'axios';
 import { SigninContext } from '../../../App';
+import { useNavigate } from 'react-router-dom';
 
 export const MemberListContext = createContext();
 
@@ -17,6 +18,8 @@ const MemberListContextProvider = ({ children }) => {
   const [keyword, setKeyword] = useState('');
   const [phoneOrName, setPhoneOrName] = useState('이름');
   const [checkedArray, setCheckedArray] = useState([]);
+
+  const navigator = useNavigate();
 
   const handleToggleAll = () => {
     const newArr = checkedArray.map((check) => {
@@ -104,37 +107,11 @@ const MemberListContextProvider = ({ children }) => {
       })
       .catch((error) => {
         if (error.response.status === 401) {
+          alert('로그인이 필요합니다.');
           setIsLogin(false);
+          navigator('/signin');
         }
       });
-  };
-
-  const onDelete = () => {
-    const confirmed = window.confirm('삭제하시겠습니까?');
-
-    if (confirmed) {
-      checkedArray.forEach((check) => {
-        if (check.checked) {
-          console.log(check.id);
-          axios
-            .delete(`http://localhost:3100/member/${check.id}`, {
-              headers: {
-                Authorization: localStorage.getItem('accessToken'),
-              },
-            })
-            .then((response) => {})
-            .catch((error) => {
-              if (error.response.status === 401) {
-                checkRefresh();
-              }
-
-              console.log(error);
-            });
-        }
-      });
-    }
-    alert('멤버를 삭제했습니다.');
-    location.reload();
   };
 
   const onChangeSearchbar = (e) => {
@@ -247,7 +224,6 @@ const MemberListContextProvider = ({ children }) => {
         phoneOrName,
         handleToggleAll,
         handleToggleSingle,
-        onDelete,
         checkedArray,
         setMemberState,
       }}

@@ -6,6 +6,8 @@ import SigninContainer from '../signinComponents/signinContainer/SigninContainer
 import MemberDetail from '../memberDetailContainer/MemberDetail';
 import StaffContainer from '../staffComponents/staffContainer/StaffContainer';
 import MemberContainer from '../memberListComponents/memberContainer/MemberContainer';
+import RegistStaffContainer from '../staffComponents/registStaff/registStaffContainer';
+import RegistPTContainer from '../registPTcomponents/RegistPTContainer';
 
 const Container = styled.div`
   margin-top: 200px;
@@ -16,17 +18,17 @@ const Container = styled.div`
 
 const BodyContainer = () => {
   return (
-    <MemberListContextProvider>
-      <Container>
-        <Routes>
-          <Route path="/memberList" element={<MemberContainer />} />
-          <Route path="/registMember" element={<RegistContainer />} />
-          <Route path="/signin" element={<SigninContainer />} />
-          <Route path="/member" element={<MemberDetail />} />
-          <Route path="/staff" element={<StaffContainer />} />
-        </Routes>
-      </Container>
-    </MemberListContextProvider>
+    <Container>
+      <Routes>
+        <Route path="/memberList" element={<MemberContainer />} />
+        <Route path="/registMember" element={<RegistContainer />} />
+        <Route path="/registPT" element={<RegistPTContainer />} />
+        <Route path="/signin" element={<SigninContainer />} />
+        <Route path="/member" element={<MemberDetail />} />
+        <Route path="/staff" element={<StaffContainer />} />
+        <Route path="/registStaff" element={<RegistStaffContainer />} />
+      </Routes>
+    </Container>
   );
 };
 

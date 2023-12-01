@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import { MemberListContext } from '../../memberListComponents/contexts/MemberListContext';
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { StaffContext } from '../contexts/StaffContext';
@@ -62,7 +61,7 @@ const SearchButton = styled.button`
 `;
 
 const StaffListTopMenu = () => {
-  const { setGender } = useContext(StaffContext);
+  const { setGender, onDelete } = useContext(StaffContext);
   const navigator = useNavigate();
 
   const onEnter = (e) => {
@@ -79,7 +78,7 @@ const StaffListTopMenu = () => {
     <Container>
       <TopMenu>
         <Menu onClick={() => navigator('/registStaff')}>등록</Menu>
-        <Menu>삭제</Menu>
+        <Menu onClick={onDelete}>삭제</Menu>
         <Menu>목록다운로드</Menu>
       </TopMenu>
       <SearchSet>

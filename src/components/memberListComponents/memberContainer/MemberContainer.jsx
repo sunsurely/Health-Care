@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import MemberListContainer from '../memberListContainer/MemberListContainer';
+import MemberListContextProvider from '../contexts/MemberListContext';
 
 const Container = styled.div`
   display: flex;
@@ -11,9 +12,11 @@ const Container = styled.div`
 
 const MemberContainer = () => {
   return (
-    <Container>
-      <MemberListContainer />
-    </Container>
+    <MemberListContextProvider>
+      <Container>
+        <MemberListContainer />
+      </Container>
+    </MemberListContextProvider>
   );
 };
 

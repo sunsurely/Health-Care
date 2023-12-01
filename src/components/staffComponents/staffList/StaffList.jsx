@@ -30,14 +30,22 @@ const Check = styled.input`
 `;
 
 const StaffList = () => {
-  const { staffData } = useContext(StaffContext);
+  const { staffData, checkedArray, checkHandleAll, checkHandleSingle } =
+    useContext(StaffContext);
 
   return (
     <Table>
       <thead>
         <Tr>
           <Th>
-            <Check type="checkbox" />
+            <Check
+              type="checkbox"
+              onChange={checkHandleAll}
+              checked={
+                checkedArray.length > 0 &&
+                checkedArray.every((check) => check.checked)
+              }
+            />
             등록일자
           </Th>
           <Th>성명</Th>
@@ -61,7 +69,17 @@ const StaffList = () => {
             .padStart(2, '0')}`;
           return (
             <Tr key={staff.id}>
-              <Td>{formattedDate}</Td>
+              <Td>
+                <Check
+                  type="checkbox"
+                  onChange={() => checkHandleSingle(staff.id)}
+                  checked={
+                    checkedArray.length > 0 &&
+                    checkedArray.find((check) => check.id === staff.id).checked
+                  }
+                />
+                {formattedDate}
+              </Td>
               <Td>{staff.name}</Td>
               <Td>{staff.gender}</Td>
               <Td>{staff.birth}</Td>

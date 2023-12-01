@@ -70,7 +70,6 @@ const MemberListTopMenu = () => {
     searchMember,
     keyword,
     phoneOrName,
-    onDelete,
   } = useContext(MemberListContext);
 
   const onEnter = (e) => {
@@ -83,7 +82,6 @@ const MemberListTopMenu = () => {
     <Container>
       <TopMenu>
         <Menu onClick={() => navigator('/registMember')}>등록</Menu>
-        <Menu onClick={onDelete}>삭제</Menu>
         <Menu>목록다운로드</Menu>
       </TopMenu>
       <SearchSet>

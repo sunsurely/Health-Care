@@ -1,8 +1,9 @@
 import styled from '@emotion/styled';
 import { useContext, useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { MemberListContext } from '../memberListComponents/contexts/MemberListContext';
+
+import { SigninContext } from '../../App';
 
 const Container = styled.div`
   width: 1000px;
@@ -58,12 +59,21 @@ const PeriodAndAmounts = styled.div`
   justify-content: space-around;
 `;
 
+const Button = styled.button`
+  border: none;
+  cursor: pointer;
+  border-radius: 10px;
+  background-color: #99999c;
+  display: ${({ state }) => (state === 'PT' ? 'none' : '')};
+`;
+
 const MemberDetail = () => {
   const [data, setData] = useState('');
-  const { setIsLogin } = useContext(MemberListContext);
+  const { setIsLogin } = useContext(SigninContext);
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const memberId = searchParams.get('id');
+  const navigator = useNavigate();
 
   useEffect(() => {
     const initData = async () => {
@@ -183,7 +193,15 @@ const MemberDetail = () => {
         </PeriodAndAmounts>
       </InfoSection>
       <InfoSection>
-        <Title>◆ PT정보</Title>
+        <Title>
+          ◆ PT정보{' '}
+          <Button
+            onClick={() => navigator(`/registPT?memberId=${memberId}`)}
+            state={data.state}
+          >
+            등록
+          </Button>
+        </Title>
         <RegistDateAndState>
           <Labels>
             <p>등록일자</p>

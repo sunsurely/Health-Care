@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import StaffListContainer from '../staffListContainer/StaffListContainer';
+import StaffContextProvider from '../contexts/StaffContext';
 
 const Container = styled.div`
   display: flex;
@@ -11,9 +12,11 @@ const Container = styled.div`
 
 const StaffContainer = () => {
   return (
-    <Container>
-      <StaffListContainer />
-    </Container>
+    <StaffContextProvider>
+      <Container>
+        <StaffListContainer />
+      </Container>
+    </StaffContextProvider>
   );
 };
 

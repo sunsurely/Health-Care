@@ -65,12 +65,12 @@ const Button = styled.button`
   }
 `;
 
-const RegistMemberForm = () => {
+const RegistStaffForm = () => {
   const [name, setName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [birth, setBirth] = useState('');
   const [gender, setGender] = useState('');
-  const [period, setPeriod] = useState(1);
+  const [email, setEmail] = useState('');
 
   const year = new Date().getFullYear();
   const month = new Date().getMonth() + 1;
@@ -88,19 +88,18 @@ const RegistMemberForm = () => {
       phoneNumber,
       birth,
       gender: gender === '여성' ? 'female' : 'male',
-      period: parseInt(period),
-      registDate: ymd,
+      email,
     };
-    console.log(formData);
+
     axios
-      .post('http://localhost:3100/member', formData, {
+      .post('http://localhost:3100/staff', formData, {
         headers: {
           Authorization: token,
         },
       })
       .then((response) => {
         alert('멤버를 등록했습니다.');
-        navigator('/memberList');
+        navigator('/staff');
       })
       .catch((err) => alert(err.response.data.message));
   };
@@ -117,8 +116,9 @@ const RegistMemberForm = () => {
   const onChangeGender = (e) => {
     setGender(e.target.value);
   };
-  const onChangePeriod = (e) => {
-    setPeriod(e.target.value);
+
+  const onChangeEmail = (e) => {
+    setEmail(e.target.value);
   };
 
   return (
@@ -152,28 +152,14 @@ const RegistMemberForm = () => {
         </select>
       </InputSet>
       <InputSet>
-        <Label>기간</Label>
-        <select
-          style={{ border: '1px solid #a2a2a2' }}
-          value={period}
-          onChange={onChangePeriod}
-        >
-          <option>1</option>
-          <option>3</option>
-          <option>4</option>
-          <option>6</option>
-          <option>12</option>
-        </select>
-      </InputSet>
-      <InputSet>
-        <Label>등록일</Label>
-        <RegistDate>{ymd}</RegistDate>
+        <Label>이메일</Label>
+        <Input type="text" value={email} onChange={onChangeEmail} />
       </InputSet>
       <ButtonContainer>
         <Button type="button" onClick={onRegist}>
           등록
         </Button>
-        <Button type="button" onClick={() => navigator('/memberList')}>
+        <Button type="button" onClick={() => navigator('/staffList')}>
           취소
         </Button>
       </ButtonContainer>
@@ -181,4 +167,4 @@ const RegistMemberForm = () => {
   );
 };
 
-export default RegistMemberForm;
+export default RegistStaffForm;

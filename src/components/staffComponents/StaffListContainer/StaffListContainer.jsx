@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import StaffListTopMenu from '../staffListTopMenu/StaffListTopMenu';
 import StaffList from '../staffList/StaffList';
-import StaffContextProvider from '../contexts/StaffContext';
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -13,16 +13,15 @@ const Container = styled.div`
   border-right: none;
   border-top: none;
   padding: 10px;
+  padding-bottom: 5px;
 `;
 
 const StaffListContainer = () => {
   return (
-    <StaffContextProvider>
-      <Container>
-        <StaffListTopMenu />
-        <StaffList />
-      </Container>
-    </StaffContextProvider>
+    <Container>
+      <StaffListTopMenu />
+      <StaffList />
+    </Container>
   );
 };
 
