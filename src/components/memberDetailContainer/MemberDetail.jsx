@@ -67,12 +67,39 @@ const Button = styled.button`
   display: ${({ state }) => (state === 'PT' ? 'none' : '')};
 `;
 
+const CountingBtn = styled.button`
+  margin-left: 5px;
+  border: none;
+  cursor: pointer;
+  border-radius: 10px;
+  background-color: #99999c;
+  display: ${({ clicked }) => (clicked ? 'none' : '')};
+`;
+
+const UpdateBtn = styled.button`
+  width: 50px;
+  margin-left: 5px;
+  border: none;
+  cursor: pointer;
+  border-radius: 10px;
+  background-color: #99999c;
+  margin-top: 10px;
+`;
+
+const CountInput = styled.input`
+  margin-top: 10px;
+  width: 50px;
+`;
+
 const MemberDetail = () => {
   const [data, setData] = useState('');
   const { setIsLogin } = useContext(SigninContext);
+  const [clickedModi, setClickedModi] = useState(false);
+  const [counting, setCounting] = useState(0);
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const memberId = searchParams.get('id');
+
   const navigator = useNavigate();
 
   useEffect(() => {
@@ -131,7 +158,7 @@ const MemberDetail = () => {
     };
 
     initData();
-  }, []);
+  }, [counting]);
 
   if (!data) {
     return <div>Loading...</div>;
@@ -143,6 +170,68 @@ const MemberDetail = () => {
   const expirationDate = new Date(registrationDate);
   expirationDate.setMonth(expirationDate.getMonth() + monthsToAdd);
   const formattedExpirationDate = expirationDate.toISOString().split('T')[0];
+
+  const onClickModi = () => {
+    setClickedModi(true);
+  };
+
+  const onClickComplete = async () => {
+    try {
+      await axios.patch(
+        `http://localhost:3100/member/${memberId}/pt/${data.ptId}/${counting}`,
+        {},
+        {
+          headers: {
+            Authorization: localStorage.getItem('accessToken'),
+          },
+        },
+      );
+      alert('PT 횟수를 수정했습니다.');
+      setCounting(0);
+      setClickedModi(false);
+    } catch (error) {
+      if (error.response?.status === 401) {
+        try {
+          const refreshResponse = await axios.post(
+            `http://localhost:3100/auth/refresh`,
+            {},
+            {
+              headers: {
+                Authorization: localStorage.getItem('refreshToken'),
+              },
+            },
+          );
+          localStorage.setItem('isLogin', 'true');
+          localStorage.setItem(
+            'accessToken',
+            `Bearer ${refreshResponse.data.accessToken}`,
+          );
+
+          await axios.patch(
+            `http://localhost:3100/member/${memberId}/pt/${data.ptId}/${counting}`,
+            {},
+            {
+              headers: {
+                Authorization: localStorage.getItem('accessToken'),
+              },
+            },
+          );
+          alert('PT 횟수를 수정했습니다.');
+          setClickedModi(false);
+          setCounting(0);
+          navigator('/memberList');
+        } catch (refreshError) {
+          if (refreshError.response?.status === 401) {
+            alert('로그인이 필요한 기능입니다.');
+            setIsLogin(false);
+            navigator('/signin');
+          }
+        }
+      } else {
+        alert(error);
+      }
+    }
+  };
 
   return (
     <Container>
@@ -214,16 +303,31 @@ const MemberDetail = () => {
         </RegistDateAndState>
         <PeriodAndAmounts>
           <Labels>
-            <p>남은횟수</p>
-            <p
-              style={
-                data.counting !== '-'
-                  ? { marginLeft: '20px' }
-                  : { marginLeft: '0px' }
-              }
-            >
-              {data.counting !== '-' ? data.counting : '-'}
+            <p>
+              남은횟수
+              <CountingBtn onClick={onClickModi} clicked={clickedModi}>
+                수정
+              </CountingBtn>
             </p>
+            {clickedModi ? (
+              <>
+                <CountInput
+                  value={counting}
+                  onChange={(e) => setCounting(e.target.value)}
+                />
+                <UpdateBtn onClick={onClickComplete}>완료</UpdateBtn>
+              </>
+            ) : (
+              <p
+                style={
+                  data.counting !== '-'
+                    ? { marginLeft: '20px' }
+                    : { marginLeft: '0px' }
+                }
+              >
+                {data.counting !== '-' ? data.counting : '-'}
+              </p>
+            )}
           </Labels>
           <Labels style={{ borderLeft: '1px solid grey' }}>
             <p>회원권 금액</p>

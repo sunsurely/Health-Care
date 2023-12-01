@@ -168,15 +168,15 @@ const RegistPTForm = () => {
     <Container>
       <InputSet>
         <Label>등록일자</Label>
-        <Input type="text" onChange={onChangeRegistDate} />
+        <Input type="text" value={registDate} onChange={onChangeRegistDate} />
       </InputSet>
       <InputSet>
         <Label>횟수</Label>
-        <Input type="text" onChange={onChangeCounting} />
+        <Input type="text" value={counting} onChange={onChangeCounting} />
       </InputSet>
       <InputSet>
         <Label>회원권금액</Label>
-        <Input type="text" onChange={onChangeAmounts} />
+        <Input type="text" value={amounts} onChange={onChangeAmounts} />
       </InputSet>
 
       <InputSet>
