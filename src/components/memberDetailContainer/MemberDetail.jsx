@@ -73,7 +73,7 @@ const CountingBtn = styled.button`
   cursor: pointer;
   border-radius: 10px;
   background-color: #99999c;
-  display: ${({ clicked }) => (clicked ? 'none' : '')};
+  display: ${({ expired }) => (expired === '-' ? 'none' : '')};
 `;
 
 const UpdateBtn = styled.button`
@@ -91,11 +91,42 @@ const CountInput = styled.input`
   width: 50px;
 `;
 
+const RegistInfoModiBtn = styled.button`
+  width: 50px;
+  margin-left: 5px;
+  border: none;
+  cursor: pointer;
+  border-radius: 10px;
+  background-color: #99999c;
+  margin-top: 10px;
+  display: ${({ clicked }) => (clicked ? 'none' : '')};
+`;
+
+const CompletInfoBtn = styled.button`
+  width: 50px;
+  margin-left: 5px;
+  border: none;
+  cursor: pointer;
+  border-radius: 10px;
+  background-color: #99999c;
+  margin-top: 10px;
+  display: ${({ clicked }) => (!clicked ? 'none' : '')};
+`;
+
+const InfoSelect = styled.select``;
+const RegistDateInput = styled.input``;
+const RegistPeriodInput = styled.input``;
+
 const MemberDetail = () => {
   const [data, setData] = useState('');
   const { setIsLogin } = useContext(SigninContext);
   const [clickedModi, setClickedModi] = useState(false);
   const [counting, setCounting] = useState(0);
+  const [registDate, setRegistDate] = useState('');
+
+  const [clickedInfo, setClickedInfo] = useState(false);
+  const [period, setPeriod] = useState(0);
+
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const memberId = searchParams.get('id');
@@ -158,7 +189,7 @@ const MemberDetail = () => {
     };
 
     initData();
-  }, [counting]);
+  }, [counting, period]);
 
   if (!data) {
     return <div>Loading...</div>;
@@ -233,6 +264,61 @@ const MemberDetail = () => {
     }
   };
 
+  const onRegistInfoBtn = () => {
+    setClickedInfo(true);
+  };
+
+  const onClickInfoComplete = async () => {
+    try {
+      await axios.patch(
+        `http://localhost:3100/member/${memberId}/state`,
+        {
+          registDate,
+          period: parseInt(period),
+        },
+        {
+          headers: {
+            Authorization: localStorage.getItem('accessToken'),
+          },
+        },
+      );
+
+      alert('멤버 정보를 업데이트했습니다');
+      setClickedInfo(false);
+    } catch (error) {
+      if (error.response?.status === 401) {
+        try {
+          await axios.post(
+            'http://localhost:3100/auth/refresh',
+            {},
+            {
+              headers: { Authorization: localStorage.getItem('refreshToken') },
+            },
+          );
+          await axios.patch(
+            `http://localstate:3100/${memberId}/state`,
+            {
+              registDate,
+              period,
+            },
+            {
+              headers: {
+                Authorization: localStorage.getItem('accessToken'),
+              },
+            },
+          );
+
+          alert('멤버 정보를 업데이트 했습니다.');
+        } catch (err) {
+          alert('로그인이 필요한 기능입니다.');
+          navigator('/signin');
+        }
+      }
+
+      alert(error.response.data.message);
+    }
+  };
+
   return (
     <Container>
       <InfoSection>
@@ -259,11 +345,32 @@ const MemberDetail = () => {
         </BirthAndPhoneNumber>
       </InfoSection>
       <InfoSection>
-        <Title>◆ 등록정보</Title>
+        <Title>
+          ◆ 등록정보
+          <CompletInfoBtn clicked={clickedInfo} onClick={onClickInfoComplete}>
+            완료
+          </CompletInfoBtn>
+          <RegistInfoModiBtn clicked={clickedInfo} onClick={onRegistInfoBtn}>
+            수정
+          </RegistInfoModiBtn>
+        </Title>
         <RegistDateAndState>
           <Labels>
-            <p>등록일자</p>
-            <p>{data.registDate}</p>
+            {clickedInfo ? (
+              <>
+                {' '}
+                <p>등록일자</p>{' '}
+                <RegistDateInput
+                  value={registDate}
+                  onChange={(e) => setRegistDate(e.target.value)}
+                />
+              </>
+            ) : (
+              <>
+                <p>등록일자</p>
+                <p>{data.registDate}</p>{' '}
+              </>
+            )}
           </Labels>
           <Labels style={{ borderLeft: '1px solid grey' }}>
             <p>구분</p>
@@ -273,7 +380,14 @@ const MemberDetail = () => {
         <PeriodAndAmounts>
           <Labels>
             <p>기간</p>
-            <p>{data.period}개월</p>
+            {clickedInfo ? (
+              <RegistPeriodInput
+                value={period}
+                onChange={(e) => setPeriod(e.target.value)}
+              />
+            ) : (
+              <p>{data.period}개월</p>
+            )}
           </Labels>
           <Labels style={{ borderLeft: '1px solid grey' }}>
             <p>만료일자</p>
@@ -305,9 +419,14 @@ const MemberDetail = () => {
           <Labels>
             <p>
               남은횟수
-              <CountingBtn onClick={onClickModi} clicked={clickedModi}>
-                수정
-              </CountingBtn>
+              {!clickedModi ? (
+                <CountingBtn onClick={onClickModi} expired={data.ptExpired}>
+                  {' '}
+                  수정
+                </CountingBtn>
+              ) : (
+                ''
+              )}
             </p>
             {clickedModi ? (
               <>

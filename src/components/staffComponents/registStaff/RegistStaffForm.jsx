@@ -159,7 +159,7 @@ const RegistStaffForm = () => {
         <Button type="button" onClick={onRegist}>
           등록
         </Button>
-        <Button type="button" onClick={() => navigator('/staffList')}>
+        <Button type="button" onClick={() => navigator('/staff')}>
           취소
         </Button>
       </ButtonContainer>
