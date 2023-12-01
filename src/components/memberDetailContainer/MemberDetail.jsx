@@ -189,7 +189,7 @@ const MemberDetail = () => {
     };
 
     initData();
-  }, [counting, period]);
+  }, [clickedInfo, clickedModi]);
 
   if (!data) {
     return <div>Loading...</div>;
@@ -210,7 +210,9 @@ const MemberDetail = () => {
     try {
       await axios.patch(
         `http://localhost:3100/member/${memberId}/pt/${data.ptId}/${counting}`,
-        {},
+        {
+          expirationDate: formattedExpirationDate,
+        },
         {
           headers: {
             Authorization: localStorage.getItem('accessToken'),
@@ -259,7 +261,7 @@ const MemberDetail = () => {
           }
         }
       } else {
-        alert(error);
+        alert(error.response?.data.message);
       }
     }
   };
@@ -275,6 +277,7 @@ const MemberDetail = () => {
         {
           registDate,
           period: parseInt(period),
+          expiredDate: formattedExpirationDate,
         },
         {
           headers: {
