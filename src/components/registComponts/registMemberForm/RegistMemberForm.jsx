@@ -73,10 +73,9 @@ const RegistMemberForm = () => {
   const [period, setPeriod] = useState(1);
 
   const year = new Date().getFullYear();
-  const month = new Date().getMonth() + 1;
-  const day = new Date().getDate();
+  const month = String(new Date().getMonth() + 1).padStart(2, '0');
+  const day = String(new Date().getDate()).padStart(2, '0');
   const ymd = `${year}-${month}-${day}`;
-  const token = localStorage.getItem('accessToken');
 
   const navigator = useNavigate();
 
@@ -95,7 +94,7 @@ const RegistMemberForm = () => {
     axios
       .post('http://localhost:3100/member', formData, {
         headers: {
-          Authorization: token,
+          Authorization: localStorage.getItem('accessToken'),
         },
       })
       .then((response) => {

@@ -45,7 +45,16 @@ const App = () => {
         setIsLogin(false);
         navigator('/signin');
       })
-      .catch((error) => alert(error));
+      .catch((error) => {
+        if (error.response.status === 401) {
+          setIsLogin(false);
+          localStorage.setItem('isLogin', '');
+          localStorage.setItem('accessToken', '');
+          localStorage.setItem('refreshToken', '');
+          navigator('/signin');
+        }
+        alert(error.response?.data.message);
+      });
   };
 
   return (

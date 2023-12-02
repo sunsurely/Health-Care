@@ -8,6 +8,7 @@ import StaffContainer from '../staffComponents/staffContainer/StaffContainer';
 import MemberContainer from '../memberListComponents/memberContainer/MemberContainer';
 import RegistStaffContainer from '../staffComponents/registStaff/registStaffContainer';
 import RegistPTContainer from '../registPTcomponents/RegistPTContainer';
+import SignupContainer from '../signupComponents/SignupContainer';
 
 const Container = styled.div`
   margin-top: 200px;
@@ -23,6 +24,7 @@ const BodyContainer = () => {
         <Route path="/memberList" element={<MemberContainer />} />
         <Route path="/registMember" element={<RegistContainer />} />
         <Route path="/registPT" element={<RegistPTContainer />} />
+        <Route path="/signup" element={<SignupContainer />} />
         <Route path="/signin" element={<SigninContainer />} />
         <Route path="/member" element={<MemberDetail />} />
         <Route path="/staff" element={<StaffContainer />} />

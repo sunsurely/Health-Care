@@ -34,11 +34,13 @@ const Header = () => {
     <Container>
       <Nav>
         <Menu onClick={() => navigator('/memberList')}>회원리스트</Menu>
-        <Menu>회원관리</Menu>
         <Menu onClick={() => navigator('/registMember')}>회원등록</Menu>
         <Menu onClick={() => navigator('/staff')}>Staff</Menu>
         <Menu onClick={isLogin ? logout : () => navigator('/signin')}>
           {isLogin ? '로그아웃' : '로그인'}
+        </Menu>
+        <Menu onClick={() => navigator('/signup')}>
+          {isLogin ? '' : '회원가입'}
         </Menu>
       </Nav>
     </Container>
