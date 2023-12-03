@@ -87,10 +87,10 @@ const RegistMemberForm = () => {
       phoneNumber,
       birth,
       gender: gender === '여성' ? 'female' : 'male',
-      period: parseInt(period),
+      period: 0,
       registDate: ymd,
     };
-    console.log(formData);
+
     axios
       .post('http://localhost:3100/member', formData, {
         headers: {
