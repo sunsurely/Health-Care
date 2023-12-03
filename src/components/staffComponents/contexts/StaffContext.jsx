@@ -21,10 +21,10 @@ const StaffContextProvider = ({ children }) => {
           params: { gender },
         })
         .then((response) => {
-          setStaffData(response.data);
+          setStaffData(response?.data);
         })
         .catch((error) => {
-          if (error.response.status === 401) {
+          if (error.response?.status === 401) {
             checkRefresh();
           }
           console.log(error);
@@ -57,7 +57,7 @@ const StaffContextProvider = ({ children }) => {
         localStorage.setItem('isLogin', 'true');
         localStorage.setItem(
           'accessToken',
-          `Bearer ${response.data.accessToken}`,
+          `Bearer ${response?.data.accessToken}`,
         );
 
         axios
@@ -68,16 +68,16 @@ const StaffContextProvider = ({ children }) => {
             },
           })
           .then((response) => {
-            setStaffData(response.data);
+            setStaffData(response?.data);
           })
           .catch((error) => {
-            if (error.response.status === 404) {
+            if (error.response?.status === 404) {
               alert('해당 스텝이 존재하지 않습니다.');
             }
           });
       })
       .catch((error) => {
-        if (error.response.status === 401) {
+        if (error.response?.status === 401) {
           setIsLogin(false);
         }
       });
@@ -122,10 +122,10 @@ const StaffContextProvider = ({ children }) => {
             })
             .then((res) => {
               alert('삭제했습니다.');
-              location.reload();
+              window.location.reload();
             })
             .catch((error) => {
-              if (error.response.status === 401) {
+              if (error.response?.status === 401) {
                 axios
                   .post(
                     `http://localhost:3100/auth/refresh`,
@@ -136,11 +136,11 @@ const StaffContextProvider = ({ children }) => {
                       },
                     },
                   )
-                  .then(() => {
+                  .then((response) => {
                     localStorage.setItem('isLogin', 'true');
                     localStorage.setItem(
                       'accessToken',
-                      `Bearer ${response.data.accessToken}`,
+                      `Bearer ${response?.data.accessToken}`,
                     );
                     axios
                       .delete(`http://localhost:3100/staff/${check.id}`, {

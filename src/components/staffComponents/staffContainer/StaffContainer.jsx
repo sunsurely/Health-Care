@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
-import StaffListContainer from '../staffListContainer/StaffListContainer';
+
 import StaffContextProvider from '../contexts/StaffContext';
+import StaffListContainer from '../StaffListContainer/StaffListContainer';
 
 const Container = styled.div`
   display: flex;

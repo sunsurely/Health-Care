@@ -61,7 +61,7 @@ const SearchButton = styled.button`
 `;
 
 const StaffListTopMenu = () => {
-  const { setGender, onDelete } = useContext(StaffContext);
+  const { setGender, onDelete, searchMember } = useContext(StaffContext);
   const navigator = useNavigate();
 
   const onEnter = (e) => {
@@ -88,7 +88,9 @@ const StaffListTopMenu = () => {
           <option>연락처</option>
         </select>
         <SearchButton>조회</SearchButton>
-        <SearchButton onClick={() => location.reload()}>새로고침</SearchButton>
+        <SearchButton onClick={() => window.location.reload()}>
+          새로고침
+        </SearchButton>
       </SearchSet>
       <OptBox>
         <Select onChange={(e) => onChangeHandler(e)}>

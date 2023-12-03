@@ -68,7 +68,7 @@ const RegistPTForm = () => {
   const [selectedTrainerId, setSelectedTrainerId] = useState(0);
 
   const navigator = useNavigate();
-  const searchParams = new URLSearchParams(location.search);
+  const searchParams = new URLSearchParams(window.location.search);
   const memberId = searchParams.get('memberId');
 
   useEffect(() => {

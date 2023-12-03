@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import axios from 'axios';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
@@ -80,7 +80,7 @@ const SignupForm = () => {
         alert('회원가입에 성공했습니다..');
         navigator('/signin');
       })
-      .catch((err) => alert(err.response.data.message));
+      .catch((err) => alert(err.response?.data.message));
   };
 
   const onChangeEmail = (e) => {

@@ -53,7 +53,7 @@ const MemberListContextProvider = ({ children }) => {
         })
         .then((res) => setData(res.data))
         .catch((error) => {
-          if (error.response.status === 401) {
+          if (error.response?.status === 401) {
             checkRefresh();
           }
           console.error(error);
@@ -100,13 +100,13 @@ const MemberListContextProvider = ({ children }) => {
             setData(response.data);
           })
           .catch((error) => {
-            if (error.response.status === 404) {
+            if (error.response?.status === 404) {
               alert('해당 회원이 존재하지 않습니다.');
             }
           });
       })
       .catch((error) => {
-        if (error.response.status === 401) {
+        if (error.response?.status === 401) {
           alert('로그인이 필요합니다.');
           setIsLogin(false);
           navigator('/signin');
